@@ -1,16 +1,18 @@
-# isar_demo_app
+# FLutter Isar Demo App
 
-A new Flutter project.
+A Flutter showcase demonstrating CRUD operations, reactive UI updates, and watcher streams on the Isar local database.
 
-## Getting Started
+## Architecture Overview
 
-This project is a starting point for a Flutter application.
+- **UI & State**: [`lib/main.dart`](lib/main.dart) wires the `MaterialApp`, renders the dashboard widgets (`UtilsView`, `UserView`), and injects controllers via GetX.
+- **Domain Model**: [`lib/user.dart`](lib/user.dart) defines the `User` collection annotated for Isar; the generated schema and query helpers live in [`lib/user.g.dart`](lib/user.g.dart).
+- **Persistence Layer**: [`lib/user_repository.IsarDB`](lib/user_repository.dart) opens the database, wraps transactions, and exposes CRUD helpers.
+- **Service Layer**: [`lib/user_service.UserService`](lib/user_service.dart) orchestrates repository calls, exposes observable lists/current user, and manages the optional `watchLazy` subscription.
+- **External Data**: [`lib/user_fetcher.RandomUserFetcher`](lib/user_fetcher.dart) pulls mock users from randomuser.me or generates fallbacks for quick demos.
 
-A few resources to get you started if this is your first Flutter project:
+## Feature Highlights
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Create, read, update, delete, and bulk-delete users via the controls in [`lib/main.dart`](lib/main.dart).
+- Auto-fill form fields when selecting list items thanks to the reactive bindings in [`lib/user_service.UserService`](lib/user_service.dart).
+- Toggle the “Watcher” checkbox to subscribe/unsubscribe from live Isar updates using `watchLazy`.
+- Fetch realistic seed data through [`lib/user_fetcher.RandomUserFetcher.fetchUser`](lib/user_fetcher.dart) to showcase asynchronous inserts.
